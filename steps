@@ -1,0 +1,24 @@
+
+##  Software used ##
+
+MongoDB
+MySQL
+Firebase
+nodejs
+
+## entity
+- wallet  - done
+- transactions - done 
+
+1)create apis in mondodb database
+-initialize wallet - done
+-credit api  - done 
+-debit api - done
+-fetch transactions
+-wallet details - done
+
+2) web pages(optional)
+-create new user ,save data in database, sections for transactions , link to page 2
+-table of all transactions.
+
+
