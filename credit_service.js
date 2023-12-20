@@ -32,6 +32,10 @@ app.post('/setup', async (req, res) => {
 
 app.post('/credit', async (req, res) => {
     const { id, balance ,description} = req.body;
+    if (balance === undefined || isNaN(balance)) {
+        return res.status(400).json({ error: 'Invalid balance provided.' });
+    }
+
     const adjustedBalance = Number(balance.toFixed(4));
     console.log("adjustable balamce------------>", adjustedBalance)
     try {
@@ -72,22 +76,29 @@ app.post('/credit', async (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 })
-// async function creditWallet(id , balances) {
-//     try {
-//         id = "6581978ac853bc5fb687bb2d"
-//         balances = 10;
-//         const wallet = await WalletModel.findById(id);
-//         if (!wallet) {
-//             console.error('Wallet not found.');
-//             return;
-//         }
-//         wallet.balance += balances;
-//         wallet.type = "Credit"
-//         wallet.description = "Recharge"
-//         const creditWallets = await wallet.save();
-//         console.log('Balance updated :', creditWallets);
-//         return { id: wallet._id, balance: wallet.balance};
-//     } catch (error) {
-//         console.error('Error:', error);
-//     }
-// }
+
+
+
+app.get('/getData', async (req, res) => {
+    const { id } = req.query;
+    console.log("request-->", req.query);
+    try {
+        const response = await WalletModel.findById(id);
+        console.log("response----------------->", response);
+
+        if (!response) {
+            console.error('Wallet not found.');
+            return res.status(404).json({ error: 'Wallet not found.' });
+        }
+
+        return res.status(201).json({
+            id: response._id,
+            balance: response.balance,
+            name: response.name,
+            date: response.date
+        });
+    } catch (error) {
+        console.error("Error fetching data", error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});

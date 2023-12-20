@@ -10,6 +10,9 @@ const { Transaction } = require('./transaction.js')
 app.post('/debit', async (req, res) => {
     const { id, balance, description } = req.body;
     console.log("request-jhugjhbj->", req.body);
+    if (balance === undefined || isNaN(balance)) {
+        return res.status(400).json({ error: 'Invalid balance provided.' });
+    }
     const adjustedBalance = Number(balance.toFixed(4));
     console.log("adjustedBalance------------->", adjustedBalance)
     try {

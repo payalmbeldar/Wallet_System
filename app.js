@@ -14,8 +14,11 @@ const fs = require('fs');
 
 const mongoURI = 'mongodb://localhost:27017/LocalDatabase';
 mongoose.connect(mongoURI);
+const cors = require('cors');
+
 
 const db = mongoose.connection;
+app.use(cors());
 
 
 db.on('error', (err) => {
@@ -32,6 +35,8 @@ app.use(express.static(path.join(__dirname)));
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'app.html'));
 });
+
+
 
 async function createWallet() {
     try {
@@ -61,6 +66,7 @@ function showTransactions() {
     window.location.href = 'transaction.html';
 }
 
+
 async function executeTransaction() {
     console.log("bhgiuab")
     const amount = parseFloat(document.getElementById('amount').value);
@@ -88,6 +94,41 @@ async function executeTransaction() {
 }
 
 
+async function checkBalance() {
+    const walletId = localStorage.getItem('walletId');
+    console.log("Wallet ID: ", walletId);
+
+    const url = `http://localhost:4200/getData?id=${encodeURIComponent(walletId)}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        console.log("Response: ", response);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Response data: ", data);
+        const currentbalance = data.balance;
+        console.log("Balance:------------> ", currentbalance);
+
+        document.getElementById('walletBalance').innerHTML = `Wallet Balance: ${currentbalance}`;
+
+    } catch (error) {
+        console.error("Error fetching data: ", error);
+    }
+}
+
+
+
+
+
 async function ShowAllTransactions() {
     const walletId = localStorage.getItem('walletId');
     console.log("bjhsbbguhs------------->", walletId)
@@ -106,6 +147,12 @@ async function ShowAllTransactions() {
     } else {
         console.error("Error fetching transactions:", response.statusText);
     }
+}
+
+
+function showTransactions() {
+    window.location.href = 'transaction.html';
+    
 }
 
 function displayTransactions(transactions) {

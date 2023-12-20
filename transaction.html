@@ -3,8 +3,17 @@
     font-style: oblique;
     margin-block-start: auto;
     text-align: -webkit-center;">Wallet Transactions</h3>
+
     <form id="transactionForm" style="text-align: center;     padding: 12px;
 ;    margin: revert;">
+        <div id="walletBalance" style="text-align: center; margin-top: 20px; padding: 30px;">
+            <span id="balanceLabel">Wallet Balance: </span>
+            <button type="button" style="background-color: burlywood;" onclick="checkBalance()">Check Balance</button>
+            <span id="boldBalance"></span>
+        </div>
+
+
+
         <label for="amount">Transaction Amount:</label>
         <input type="number" id="amount" required>
 
@@ -13,7 +22,8 @@
             <option value="CREDIT">Credit</option>
             <option value="DEBIT">Debit</option>
         </select>
-        <button type="button" style = " background-color: burlywood;" onclick="executeTransaction()">Submit Transaction</button>
+        <button type="button" style=" background-color: burlywood;" onclick="executeTransaction()">Submit
+            Transaction</button>
     </form>
 </div>
 
@@ -22,7 +32,8 @@
     <input type="number" id="skip">
     <label for="limit">Limit</label>
     <input type="number" id="limit">
-    <button type="button"  style = " background-color: burlywood;"onclick="ShowAllTransactions()">All Transactions</button>
+    <button type="button" style=" background-color: burlywood;" onclick="ShowAllTransactions()">All
+        Transactions</button>
 </div>
 
 <div id="transactionsTable" style="text-align: -webkit-center;">
